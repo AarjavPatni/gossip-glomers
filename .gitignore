@@ -1,0 +1,33 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of go build
+/bin/
+/build/
+/dist/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Go module files (optional if you don't want them ignored)
+# go.mod
+# go.sum
+
+# Vendor directory (if using vendoring)
+/vendor/
+
+# IDE/editor files
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+.DS_Store
+.env
+
