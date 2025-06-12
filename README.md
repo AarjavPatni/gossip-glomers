@@ -5,7 +5,7 @@ This repo contains my Go implementations of the [Fly.io Distributed Systems Chal
 ## Challenges
 
 - [x] Challenge #1: Echo
-- [ ] Challenge #2: Unique ID Generation
+- [x] Challenge #2: Unique ID Generation
 - [ ] Challenge #3a: Single-Node Broadcast
 - [ ] Challenge #3b: Multi-Node Broadcast
 - [ ] Challenge #3c: Fault Tolerant Broadcast
