@@ -2,14 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	"slices"
 
 	maelstrom "github.com/jepsen-io/maelstrom/demo/go"
 )
 
 func main() {
 	n := maelstrom.NewNode()
-	var messages []any
+	var messages []int
 
 	n.Handle("broadcast", func(msg maelstrom.Message) error {
 		var body map[string]any
@@ -19,8 +19,14 @@ func main() {
 			return err
 		}
 
-		messages = append(messages, body["message"])
-		log.Println("Message is not of type int")
+		if !(slices.Contains(messages, int(body["message"].(float64)))) {
+			incoming_msg := int(body["message"].(float64))
+			messages = append(messages, incoming_msg)
+
+			for _, node := range n.NodeIDs() {
+				n.Send(node, body)
+			}
+		}
 
 		var reply = make(map[string]any)
 		reply["type"] = "broadcast_ok"
@@ -37,6 +43,20 @@ func main() {
 	})
 
 	n.Handle("topology", func(msg maelstrom.Message) error {
+		var body map[string]any
+		err := json.Unmarshal(msg.Body, &body)
+
+		if err != nil {
+			return err
+		}
+
+		rawArr := body["topology"].(map[string]any)[n.ID()].([]any)
+		strArr := make([]string, len(rawArr))
+
+		for i, node := range rawArr {
+			strArr[i] = node.(string)
+		}
+
 		var reply = make(map[string]any)
 		reply["type"] = "topology_ok"
 
